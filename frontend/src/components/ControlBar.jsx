@@ -10,29 +10,33 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import sampleMusic from "../assets/sample-music.mp3";
 
-// const getSong = async (start = 0, end = 200) => {
-//   const headers = new Headers();
+const getSongChunk = async (start = 0, end = 1000) => {
+  const headers = new Headers();
 
-//   headers.append("range", `bytes=${start}-${end}`);
+  headers.append("range", `bytes=${Math.floor(start)}-${Math.floor(end)}`);
 
-//   const req = new Request("http://localhost:3000/", {
-//     method: "GET",
-//     headers,
-//     mode: "cors",
-//     cache: "default",
-//   });
+  const req = new Request("http://localhost:3000/", {
+    method: "GET",
+    headers,
+    mode: "cors"
+  });
 
-//   const response = await fetch(req);
-// };
+  const res = await fetch(req);
+
+  console.log(res);
+
+  return res.arrayBuffer();
+
+};
 
 export default function ControlBar() {
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   const audioElement = useRef(null);
   const audioContext = useRef(null);
-  // const rendered = useRef(false);
   const [rendered, setRendered] = useState(false);
   const track = useRef(null);
   const gainNode = useRef(null);
+  const currentPosition = useRef(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -47,8 +51,6 @@ export default function ControlBar() {
   useEffect(() => {
     if (!rendered && audioContext.current) {
       gainNode.current = audioContext.current.createGain();
-      console.log(gainNode);
-      console.log("connectionf");
       track.current = audioContext.current.createMediaElementSource(
         audioElement.current
       );
@@ -57,13 +59,11 @@ export default function ControlBar() {
         .connect(audioContext.current.destination);
       setRendered(true);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioContext.current]);
 
-  useEffect(() => {
-    console.log(audioContext, rendered);
-  });
 
-  const handlePlayPause = (e) => {
+  const handlePlayPause = async (e) => {
     e.preventDefault();
 
     if (!audioContext.current) {
@@ -82,6 +82,8 @@ export default function ControlBar() {
       audioElement.current.pause();
       setIsPlaying(false);
     }
+
+    console.log(audioElement);
   };
 
   const handleVolume = (e) => {
@@ -89,6 +91,17 @@ export default function ControlBar() {
       gainNode.current.gain.value = e.target.value;
     }
   };
+
+  const handleSeek = async (e) => {
+    e.preventDefault();
+    const seek = e.target.value;
+    const start = (seek * 4268199) / 100;
+    const end = start + 1024 * 1000; // 1 MB
+
+    const audioBuffer = await getSongChunk(start, end);
+
+    // continue
+  }
 
   return (
     <div className="control-bar">
@@ -103,7 +116,10 @@ export default function ControlBar() {
       <audio src={sampleMusic} ref={audioElement}>
         Browser Not Supported
       </audio>
-      {/* <input type="range" id="volume" min="0" max="2" value="1" step="0.01" /> */}
+      {/* <audio src={} ref={audioElement}>
+        Browser Not Supported
+  </audio> */}
+      <input type="range" id="seek" min="0" max="100" onChange={handleSeek} step="5" ref={currentPosition} />
       {buttonCreator(repeatIcon, "back")}
       {buttonCreator(shuffleIcon, "back")}
       {buttonCreator(volumeIcon, "back")}
