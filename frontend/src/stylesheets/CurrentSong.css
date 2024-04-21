@@ -37,6 +37,7 @@
       aspect-ratio: 1;
       z-index: 1;
       height: 65px;
+      overflow: hidden;
     }
   }
 }

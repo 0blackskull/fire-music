@@ -7,14 +7,14 @@ import soundIcon from "../assets/icons/sound.svg";
 import { SongContext } from "../App";
 
 // Song data imgUrl is compressed of cover
-const songData = {
-  id: 123,
-  imgUrl: coverPhoto,
-  title: "Let It Happen",
-  artist: "Tame Impala",
-  year: "2023",
-  duration: "05:33",
-};
+// const songData = {
+//   id: 123,
+//   imgUrl: coverPhoto,
+//   title: "Let It Happen",
+//   artist: "Tame Impala",
+//   year: "2023",
+//   duration: "05:33",
+// };
 
 export default function SongCard({ songData }) {
   const [active, setActive] = useState(false);
@@ -24,7 +24,7 @@ export default function SongCard({ songData }) {
   const handleChange = (e) => {
     e.preventDefault();
     setActive(true);
-    setCurrentSongId(songData.id);
+    setCurrentSongId(songData.id, songData);
     console.log(previousSongId, currentSongId);
   };
 
@@ -45,13 +45,13 @@ export default function SongCard({ songData }) {
           className={`song-card-container${active ? "-active" : ""}`}
         >
           <div className="cover-pic-preview">
-            <img src={coverPhoto} alt="cover-image" />
+            <img src={songData.imgUrl} alt="cover-image" />
           </div>
           <div className="description">
-            <div className="title">Let It Happen</div>
-            <div className="info">Tame Impala 2020</div>
+            <div className="title">{songData.title}</div>
+            <div className="info">{songData.artist}{' • '}{songData.year}</div>
           </div>
-          <div className="duration">05:33</div>
+          <div className="duration">{songData.duration}</div>
         </button>
       </div>
     </div>

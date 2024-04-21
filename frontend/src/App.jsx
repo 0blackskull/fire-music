@@ -3,6 +3,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import "./App.css";
@@ -22,20 +23,33 @@ const TABS = {
   BROWSE: "Browse",
 };
 
+const firstSong = {
+  id: 125,
+  imgUrl: "/src/assets/test_image.png",
+  // fileUrl: "../assets/test_song.mp3",
+  title: "Somebody Else",
+  artist: "The 1975",
+  year: "2016",
+  duration: "05:33" // seconds
+}
+
 export const SongContext = createContext({
   currentSongId: null,
   previousSongId: null,
+  currentSongData: null,
   setCurrentSongId: () => {},
 });
 
 export const SongProvider = ({ children }) => {
-  const [currentSongId, setCurrentSongId] = useState(null);
+  const [currentSongId, setCurrentSongId] = useState(firstSong.id);
   const [previousSongId, setPreviousSongId] = useState(null);
+  const [currentSongData, setCurrentSongData] = useState(firstSong);
 
-  const handleSetCurrentSongId = (id) => {
+  const handleSetCurrentSongId = (id, songData) => {
     if (id !== currentSongId) {
       setPreviousSongId(currentSongId);
       setCurrentSongId(id);
+      setCurrentSongData(songData);
     }
   };
 
@@ -44,6 +58,7 @@ export const SongProvider = ({ children }) => {
       value={{
         currentSongId,
         previousSongId,
+        currentSongData,
         setCurrentSongId: handleSetCurrentSongId,
       }}
     >
@@ -54,7 +69,8 @@ export const SongProvider = ({ children }) => {
 
 function App() {
   const [sidebarOption, setSidebarOption] = useState(TABS.TRENDS);
-  const [searchInput, setSearchInput] = useState("");
+  // const [searchInput, setSearchInput] = useState("");
+  const searchRef = useRef(null);
 
   return (
     <SongProvider>
@@ -62,7 +78,7 @@ function App() {
         sidebarOption={sidebarOption}
         setSidebarOption={setSidebarOption}
       />
-      <Content setSearchInput={setSearchInput} />
+      <Content searchInputRef={searchRef} />
       <div className="border"></div>
       <CurrentTab />
       <ControlBar />

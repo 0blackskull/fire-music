@@ -61,6 +61,8 @@ export default function Sidebar({ sidebarOption, setSidebarOption }) {
     setSidebarOption(selectedOption);
   };
 
+  console.log('sidebar')
+
   return (
     <div className="sidebar-wrapper">
       <div className="sidebar">
