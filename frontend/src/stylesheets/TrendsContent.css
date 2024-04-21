@@ -1,0 +1,7 @@
+.trends-container {
+  display: flex;
+  flex-direction: column;
+  trends-section > .cards-holder {
+    display: flex;
+  }
+}

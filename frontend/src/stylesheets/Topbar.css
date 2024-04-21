@@ -1,0 +1,32 @@
+.topbar {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  justify-content: space-between;
+  width: 100%;
+
+  .topbar-button-wrapper {
+    background: linear-gradient(#4d25ae 0 20%, #e33e9f 80% 100%);
+    padding: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .topbar-button-wrapper,
+  button {
+    border-radius: 50%;
+    width: 4vh;
+    height: 4vh;
+    overflow: hidden;
+  }
+
+  button {
+    border: none;
+    background: linear-gradient(#1f1443 0 10%, #421a3f 70% 100%);
+  }
+
+  button > img {
+    height: 20px;
+  }
+}

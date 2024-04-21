@@ -1,0 +1,65 @@
+.trending-song {
+  position: relative;
+  color: white;
+  border-radius: 32px;
+  overflow: hidden;
+  border: 1px solid #4d25ae;
+  min-width: 384px;
+  width: 40vw;
+  aspect-ratio: 2;
+
+  .cover-pic,
+  .desc-container {
+    position: absolute;
+    color: white;
+  }
+
+  .cover-pic {
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .desc-container {
+    bottom: 0;
+    background: rgba(70, 40, 119, 0.252);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    height: 30%;
+    display: flex;
+    align-items: center;
+
+    .desc {
+      flex-grow: 1;
+      padding-left: 30px;
+
+      .song-title {
+        font-size: 24px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-weight: 550;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+
+        font-size: max(18px, 1.5vw);
+      }
+
+      .song-info {
+        font-size: 16px;
+        color: #8e8a8c;
+      }
+    }
+
+    .heart-icon {
+      border: 2px solid #532086;
+      border-radius: 50%;
+      height: 35px;
+      aspect-ratio: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      justify-self: flex-end;
+      margin-right: 30px;
+    }
+  }
+}

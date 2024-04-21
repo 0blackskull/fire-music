@@ -1,65 +1,40 @@
-import http from 'node:http';
-import Client from "pg";
+const express = require('express')
+const app = express()
+const port = 3000
 
-// Imported classes or functions whatever
-import { userRoute } from './routes/UserRoutes.js';
+const filePath = '../frontend/src/assets/sample-music.mp3';
 
-const client = new Client.Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'fire_music_db',
-    password: "p",
-    port: 5432, // Default PostgreSQL port
-});
+app.get('/', (req, res) => {
 
-client.connect()
-    .then(() => console.log("DB connection successful"))
-    .catch((err) => console.error("DB connection Failure: ", err));
+  fs.stat(filePath, (err, stats) => {
+    if (err) {
+      console.error(err);
+      res.writeHead(404, {'Content-Type': 'text/plain'});
+      res.end('File not found');
+      return;
+    }
 
-// An object with key value pairs as path and class or function
-const routes = {
-    'users': (req, res) => {userRoute(req, res);}
-};
+    const range = req.headers.range;
+    const fileSize = stats.size;
+    const chunkSize = 1024 * 1024;
+    const start = Number(range.replace(/\D/g, ""));
+    const end = Math.min(start + chunkSize, fileSize - 1);
 
-const cors = (res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    return res;
-};
+    const headers = {
+      "Content-Type": "video/mp4",
+      "Content-Length": end - start,
+      "Content-Range": "bytes " + start + "-" + end + "/" + fileSize,
+      "Accept-Ranges": "bytes",
+    };
 
-const server = http.createServer((req, res) => {
-    res = cors(res);
+    res.writeHead(206, headers);
 
-    const base = req.url?.split('/')[1] ?? '';
-    const routeFunction = routes[base];
-    // routeFunction(req, res);
-    userRoute(req, res);
-    // do object[req.url] to call the appropriate class or function
-});
+    const fileStream = fs.createReadStream(filePath, { start, end });
 
-server.listen(8080, 'localhost');
+    fileStream.pipe(res);
+  });
+})
 
-export default client;
-
-/*
-Server will have a secret key say s_k
-const jwt = require('jsonwebtoken');
-
-JWT = header + payload + signature
-
-Payload -> Registered claims, Public claims, Private claims
-
-HMACSHA256(
-  base64UrlEncode(header) + "." +
-  base64UrlEncode(payload),
-  secret)
-
-jwt has 2 functions jwt.sign and jwt.verify
-
-jwt.sign(payload, secretkey, [options, callback])
-callback will have err and token
-
-
-jwt.verify(token, secretkey, [options, callback])
-*/
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})

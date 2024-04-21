@@ -1,0 +1,25 @@
+.control-bar {
+  position: absolute;
+  bottom: 0;
+  height: 110px;
+  width: 100vw;
+  background: rgba(46, 19, 55, 0.9);
+  backdrop-filter: blur(10px);
+  border-top: 2px solid #782daa;
+  display: flex;
+  align-items: center;
+
+  button {
+    background: none;
+    outline: none;
+    box-shadow: none;
+    border: none;
+  }
+
+  .song-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 130px;
+  }
+}

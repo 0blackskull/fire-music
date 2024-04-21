@@ -1,0 +1,93 @@
+.sidebar-wrapper {
+  background: linear-gradient(#e33e9f 0 5%, #22133d 80% 100%);
+  min-width: 198px;
+  width: fit-content;
+  flex-grow: 0;
+
+  .sidebar {
+    background-color: #1d0f28;
+    margin-right: 2px;
+    height: 100vh;
+    width: 15%;
+    min-width: inherit;
+    overflow-y: auto;
+    scrollbar-width: none;
+
+    .logo > img {
+      height: 35px;
+      padding: 25px;
+    }
+
+    .section {
+      display: flex;
+      height: 270px;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 25px 25px;
+
+      .title {
+        color: white;
+        font-size: 20px;
+        letter-spacing: 2px;
+        font-weight: 500;
+        padding-left: 32.5px;
+      }
+
+      .option {
+        color: #b2b2b2;
+        border: 2px solid transparent;
+        transition: background-color 0.2s ease;
+
+        /*Unselected option icons dim #b2b2b2*/
+        img {
+          filter: invert(30%);
+        }
+      }
+
+      .option:hover {
+        background-color: #4b244a;
+        transition: background-color 0.1s ease;
+      }
+
+      .selected-option {
+        /* background: linear-gradient(0deg, #4c244b 0 50%, #0e0d20 80% 100%); */
+        background: #4b244a;
+        border: 2px solid #e33e9f;
+        transition: background-color 0.2s ease, border 0.3s ease;
+
+        img {
+          /*Color change to approx ff607d*/
+          filter: invert(40%) sepia(25%) saturate(2973%) hue-rotate(311deg)
+            brightness(101%) contrast(101%);
+          display: inline-block;
+        }
+
+        color: white;
+      }
+
+      /*Style for both selected and not selected option icons*/
+      img {
+        margin-right: 10px;
+        height: 20px;
+      }
+
+      span {
+        line-height: 10px;
+      }
+    }
+
+    button {
+      border: none;
+      background: none;
+      display: flex;
+      align-items: center;
+      height: 40px;
+      width: 100%;
+      padding: 10px 0 10px 25px;
+      transition: none;
+      border-radius: 20px;
+      font-size: 16px;
+    }
+  }
+}

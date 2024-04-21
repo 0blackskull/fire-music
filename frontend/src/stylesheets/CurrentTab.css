@@ -1,0 +1,35 @@
+.current-tab-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 100px 20px 0 20px;
+  padding-top: 100px;
+  flex-grow: 0;
+  min-width: 320px;
+  width: 35%;
+
+  .next-songs {
+    width: 100%;
+    margin-left: -25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    padding-bottom: 40%;
+    scrollbar-width: none;
+  }
+
+  .current-tab-header {
+    font-size: 18px;
+    color: white;
+    letter-spacing: 2px;
+    font-weight: 600;
+    align-self: stretch;
+    padding-left: 10px;
+
+    img {
+      margin-bottom: -3px;
+    }
+  }
+}
