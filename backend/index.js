@@ -58,6 +58,16 @@ app.get('/', (req, res) => {
   }
 })
 
+app.get('/proxy-fire', (req, res) => {
+  console.info('--------------------------------req from proxy---------------------------')
+  // console.info(req);
+  res.write(JSON.stringify({
+    piggy: 'hi',
+    wow: 'yo',
+  }));
+  res.send();
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

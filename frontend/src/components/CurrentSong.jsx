@@ -1,7 +1,7 @@
 import "../stylesheets/CurrentSong.css";
 import coverPhoto from "../assets/icons/user.svg";
 import longSoundIcon from "../assets/icons/long-sound.svg";
-import { useContext } from "react";
+import { memo, useContext } from "react";
 import { SongContext } from "../App";
 
 // const songData = {
@@ -13,9 +13,9 @@ import { SongContext } from "../App";
 //   duration: "05:33",
 // };
 
-export default function CurrentSong() {
+export const CurrentSong = memo(function CurrentSong() {
   const { currentSongData } = useContext(SongContext);
-  console.log(window.location.pathname, coverPhoto);
+  // console.log(window.location.pathname, coverPhoto);
 
   return (
     <div className="current-song-container-wrapper">
@@ -34,4 +34,4 @@ export default function CurrentSong() {
       </div>
     </div>
   );
-}
+})

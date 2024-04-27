@@ -1,6 +1,6 @@
 import soundIcon from "../assets/icons/sound.svg";
 import coverPhoto from "../assets/icons/user.svg";
-import CurrentSong from "./CurrentSong";
+import { CurrentSong } from "./CurrentSong";
 import SongCard from "./SongCard";
 import "../stylesheets/CurrentTab.css";
 
@@ -29,7 +29,24 @@ const songs = [{
   artist: "M83",
   year: "2011",
   duration: "05:33" // seconds
-}]
+},
+{
+  id: 127,
+  imgUrl: "/src/assets/test_image.png",
+  title: "Some New Title",
+  artist: "New Artist",
+  year: "2022",
+  duration: "04:20"
+},
+{
+  id: 128,
+  imgUrl: "/src/assets/test_image.png",
+  title: "Another Title",
+  artist: "Different Artist",
+  year: "2023",
+  duration: "03:45"
+}
+]
 
 
 export default function CurrentTab() {

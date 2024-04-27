@@ -1,11 +1,18 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { memo, useContext, useEffect, useRef, useState } from 'react';
+import pauseIcon from "../assets/icons/pause.svg";
 import "../stylesheets/ControlBar.css"
 import { SongContext } from '../App';
 
-export default function ControlBar() {
+export const ControlBar =  memo(function ControlBar() {
   const [audioUrl, setaudioUrl] = useState(null);
-  const { currentSongId } = useContext(SongContext);
+  
+  const { currentSongId, currentSongData } = useContext(SongContext);
   const rendered = useRef(false);
+  const audioRef = useRef(null);
+  const volumeRef = useRef(null);
+  const [duration, setDuration] = useState(0);
+
+  const [currentTime, setCurrentTime] = useState(0);
 
   console.log('control bar');
 
@@ -23,6 +30,7 @@ export default function ControlBar() {
           },
         });
         const audioBlob = await response.blob(); // Extract Blob data from response
+  
         const audioUrl = URL.createObjectURL(audioBlob);
 
         setaudioUrl(audioUrl);
@@ -45,9 +53,61 @@ export default function ControlBar() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSongId, rendered]);
 
+  const handlePlayPause = (e) => {
+    e.preventDefault();
+    
+    if (audioRef.current.paused === true) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
+    }
+  }
+
+  const handleTimeUpdate = (e) => {
+    e.preventDefault();
+    if (audioRef.current) {
+      if (Math.abs(audioRef.current.currentTime - currentTime) >= 1) {
+        setCurrentTime(Math.floor(audioRef.current.currentTime));
+      }
+    }
+  }
+
+  const handleSeek = (e) => {
+    e.preventDefault();
+    if (Math.abs(audioRef.current.currentTime - e.target.value) >= 1) {
+      audioRef.current.currentTime = e.target.value;
+    }
+  }
+
+  const handleVolume = (e) => {
+    e.preventDefault();
+    audioRef.current.volume = e.target.value;
+  };
+
+  const handleMute = (e) => {
+    e.preventDefault();
+
+    if (volumeRef.current.value > 0) {
+      volumeRef.current.value = 0
+    } else {
+      volumeRef.current.value = 0.5;
+    }
+
+    audioRef.current.volume = volumeRef.current.value;    
+  }
+
   return (
     <div className='control-bar'>
-      <CreateAudio url={audioUrl} />
+      <audio src={audioUrl} autoPlay={false} ref={audioRef} onTimeUpdate={handleTimeUpdate} onDurationChange={(e) => setDuration(e.currentTarget.duration)}>Browser problem</audio>
+      <button onClick={handlePlayPause} role="switch" aria-checked="false">
+          <img src={pauseIcon} alt="play/pause" />
+      </button>
+      <div className='timer'>{currentTime}{' / '}{currentSongData.duration}</div>
+      <div><input type='range' value={currentTime} onChange={handleSeek} step={5} min="0" max={duration} /></div>
+      <div><input type="range" ref={volumeRef} onChange={handleVolume} min="0" max="1" step={0.1} defaultValue={1} /></div>
+      <div><button onClick={handleMute}>Mute</button></div>
     </div>
   );
-}
+}, function (prevProps, nextProps) {
+  return !prevProps.audioUrl || !nextProps.audioUrl || prevProps.audioUrl === nextProps.audioUrl;
+})

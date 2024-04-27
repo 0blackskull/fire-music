@@ -25,12 +25,20 @@ export default function SongCard({ songData }) {
     e.preventDefault();
     setActive(true);
     setCurrentSongId(songData.id, songData);
-    console.log(previousSongId, currentSongId);
+    console.log(`${songData.title} activated`);
+    // console.log(previousSongId, currentSongId, songData.id);
   };
 
   useEffect(() => {
     setActive(false);
-  }, [songData.id === previousSongId && songData.id !== currentSongId]);
+    console.log(`${songData.title} is listening. Current song is ${currentSongId}`);
+  }, [currentSongId !== songData.id && active === true]);
+
+  // useEffect(() => {
+  //   setActive(false);
+  //   // console.log('useeffect', previousSongId, currentSongId, songData.id);
+  //   console.log(`${songData.title} deactivated as current is ${currentSongId}`);
+  // }, [songData.id === previousSongId && songData.id !== currentSongId]);
 
   return (
     <div className="song-card">

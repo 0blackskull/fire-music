@@ -39,4 +39,12 @@ audio::-webkit-media-controls-toggle-closed-captions-button */
     align-items: center;
     width: 130px;
   }
+
+  .time {
+    color: white;
+  }
+
+  /* audio {
+    opacity: 0%;
+  } */
 }

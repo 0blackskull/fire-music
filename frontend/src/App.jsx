@@ -10,7 +10,7 @@ import "./App.css";
 import Sidebar from "./components/Sidebar.jsx";
 import Content from "./components/Content.jsx";
 import CurrentTab from "./components/CurrentTab.jsx";
-import ControlBar from "./components/ControlBar.jsx";
+import { ControlBar } from "./components/ControlBar.jsx";
 
 const TABS = {
   TRENDS: "Trends",
@@ -35,19 +35,19 @@ const firstSong = {
 
 export const SongContext = createContext({
   currentSongId: null,
-  previousSongId: null,
+  // previousSongId: null,
   currentSongData: null,
   setCurrentSongId: () => {},
 });
 
 export const SongProvider = ({ children }) => {
   const [currentSongId, setCurrentSongId] = useState(firstSong.id);
-  const [previousSongId, setPreviousSongId] = useState(null);
+  // const [previousSongId, setPreviousSongId] = useState(null);
   const [currentSongData, setCurrentSongData] = useState(firstSong);
 
   const handleSetCurrentSongId = (id, songData) => {
     if (id !== currentSongId) {
-      setPreviousSongId(currentSongId);
+      // setPreviousSongId(currentSongId);
       setCurrentSongId(id);
       setCurrentSongData(songData);
     }
@@ -57,7 +57,7 @@ export const SongProvider = ({ children }) => {
     <SongContext.Provider
       value={{
         currentSongId,
-        previousSongId,
+        // previousSongId,
         currentSongData,
         setCurrentSongId: handleSetCurrentSongId,
       }}
