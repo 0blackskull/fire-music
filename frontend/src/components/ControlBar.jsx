@@ -1,4 +1,4 @@
-import React, { createContext, memo, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useContext, useEffect, useRef, useState } from 'react';
 import pauseIcon from "../assets/icons/pause.svg";
 import prevIcon from "../assets/icons/prev.svg";
 import nextIcon from "../assets/icons/next.svg";
@@ -17,10 +17,11 @@ const AudioBar = ({ audioRef, duration, currentTimeDivRef, seekInputRef }) => {
   }
 
   return (
-    <div>
-      <div className='timer' ref={currentTimeDivRef}></div>
+    <div className='timer-track'>
+      <div className='timer' ref={currentTimeDivRef}>0:00</div>
       <input id='track' ref={seekInputRef} type='range' defaultValue={0}
         onChange={handleSeek} step={1} min="0" max={duration} />
+        <div className='timer'>{Math.floor(duration)}</div>
     </div>
   )
 }
@@ -48,7 +49,7 @@ const CreateAudio = memo(function CreateAudio({
   audioRef
 }) {
   return (
-    <audio src={audioUrl} autoPlay={true} ref={audioRef} onTimeUpdate={(e) => handleTimeUpdate(e)}
+    <audio src={audioUrl} autoPlay={false} ref={audioRef} onTimeUpdate={(e) => handleTimeUpdate(e)}
       onDurationChange={(e) => setDuration(e.currentTarget.duration)}>
       Browser problem
     </audio>
@@ -113,24 +114,12 @@ export const ControlBar = memo(function ControlBar() {
   const handleTimeUpdate = (e) => {
     e.preventDefault();
 
-    // console.log(`
-    // currentTime:${audioRef.current.currentTime}\n
-    // seekInputValue:${seekInputRef.current.value}
-    // `)
-
     if (Math.abs(audioRef.current.currentTime - seekInputRef.current.value) > 1) {
       const updatedTime = Math.floor(audioRef.current.currentTime);
       seekInputRef.current.value = updatedTime;
       currentTimeDivRef.current.textContent = updatedTime;
     }
   }
-
-  // const handleSeek = (e) => {
-  //   e.preventDefault();
-  //   if (Math.abs(audioRef.current.currentTime - e.target.value) >= 1) {
-  //     audioRef.current.currentTime = e.target.value;
-  //   }
-  // }
 
   const handleVolume = (e) => {
     e.preventDefault();
@@ -174,7 +163,6 @@ export const ControlBar = memo(function ControlBar() {
         duration={duration}
         handleSeek={handleSeek}
       /> */}
-      <div className='timer'>{currentSongData.duration}</div>
       <button id='mute-btn' onClick={handleMute}>
         <img src={volumeIcon} alt="Mute/sound" />
       </button>

@@ -31,6 +31,12 @@
     color: white;
   }
 
+  .timer-track {
+    display: flex;
+    align-items: center;
+    margin: 0 2% 0 2%;
+  }
+
   input[type="range"] {
     /* -webkit-appearance: none;
     appearance: none; */
