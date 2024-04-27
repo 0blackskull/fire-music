@@ -4,13 +4,16 @@ import personIcon from "../assets/icons/user.svg";
 import searchIcon from "../assets/icons/search.svg";
 import ArtistCard from "./ArtistCard";
 import TrendingSong from "./TrendingSong";
+import { memo } from "react";
 
-export default function Content({ searchInputRef }) {
+export const Content = memo(function Content({ searchInputRef }) {
   const placeholderString = "Enter keywords to search";
   // const handleInput = (e) => {
   //   e.preventDefault();
   //   setSearchInput(e.target.value);
   // };
+
+  console.log('Content re rendered');
 
   return (
     <div className="main-content">
@@ -54,4 +57,4 @@ export default function Content({ searchInputRef }) {
       </div>
     </div>
   );
-}
+})

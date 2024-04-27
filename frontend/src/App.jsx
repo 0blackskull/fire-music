@@ -8,8 +8,8 @@ import {
 } from "react";
 import "./App.css";
 import Sidebar from "./components/Sidebar.jsx";
-import Content from "./components/Content.jsx";
-import CurrentTab from "./components/CurrentTab.jsx";
+import { Content } from "./components/Content.jsx";
+import { CurrentTab } from "./components/CurrentTab.jsx";
 import { ControlBar } from "./components/ControlBar.jsx";
 
 const TABS = {

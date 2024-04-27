@@ -96,6 +96,10 @@ export const ControlBar =  memo(function ControlBar() {
     audioRef.current.volume = volumeRef.current.value;    
   }
 
+  useEffect(() => {
+    console.log('Control bar re rendered');
+  })
+
   return (
     <div className='control-bar'>
       <audio src={audioUrl} autoPlay={false} ref={audioRef} onTimeUpdate={handleTimeUpdate} onDurationChange={(e) => setDuration(e.currentTarget.duration)}>Browser problem</audio>
@@ -108,6 +112,4 @@ export const ControlBar =  memo(function ControlBar() {
       <div><button onClick={handleMute}>Mute</button></div>
     </div>
   );
-}, function (prevProps, nextProps) {
-  return !prevProps.audioUrl || !nextProps.audioUrl || prevProps.audioUrl === nextProps.audioUrl;
 })

@@ -3,6 +3,7 @@ import coverPhoto from "../assets/icons/user.svg";
 import { CurrentSong } from "./CurrentSong";
 import SongCard from "./SongCard";
 import "../stylesheets/CurrentTab.css";
+import { memo } from "react";
 
 const songs = [{
   id: 124,
@@ -49,7 +50,9 @@ const songs = [{
 ]
 
 
-export default function CurrentTab() {
+export const CurrentTab = memo(function CurrentTab() {
+
+  console.log('Current tab re rendered');
 
   return (
     <div className="current-tab-container">
@@ -65,4 +68,4 @@ export default function CurrentTab() {
       </div>
     </div>
   );
-}
+})
