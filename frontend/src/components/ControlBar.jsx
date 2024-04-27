@@ -4,7 +4,6 @@ import "../stylesheets/ControlBar.css"
 import { SongContext } from '../App';
 
 export const ControlBar =  memo(function ControlBar() {
-  const [audioUrl, setaudioUrl] = useState(null);
   
   const { currentSongId, currentSongData } = useContext(SongContext);
   const rendered = useRef(false);
@@ -14,11 +13,13 @@ export const ControlBar =  memo(function ControlBar() {
 
   const [currentTime, setCurrentTime] = useState(0);
 
-  console.log('control bar');
+  const [audioUrl, setaudioUrl] = useState(null);
 
-  const CreateAudio = () => {
-    return (<audio src={audioUrl} autoPlay={true} controls>Browser problem</audio>);
-  }
+  // console.log('control bar');
+
+  // const CreateAudio = () => {
+  //   return (<audio src={audioUrl} autoPlay={true} controls>Browser problem</audio>);
+  // }
 
   useEffect(() => {
     const playSong = async () => {
@@ -97,7 +98,7 @@ export const ControlBar =  memo(function ControlBar() {
   }
 
   useEffect(() => {
-    console.log('Control bar re rendered');
+    console.log('Control bar re rendered', currentSongId);
   })
 
   return (

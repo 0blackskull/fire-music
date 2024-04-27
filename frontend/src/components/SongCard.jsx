@@ -18,21 +18,21 @@ import { SongContext } from "../App";
 
 export default function SongCard({ songData }) {
   const [active, setActive] = useState(false);
-  const { currentSongId, previousSongId, setCurrentSongId } =
+  const { currentSongData, setCurrentSong } =
     useContext(SongContext);
 
   const handleChange = (e) => {
     e.preventDefault();
     setActive(true);
-    setCurrentSongId(songData.id, songData);
+    setCurrentSong(songData);
     console.log(`${songData.title} activated`);
     // console.log(previousSongId, currentSongId, songData.id);
   };
 
   useEffect(() => {
     setActive(false);
-    console.log(`${songData.title} is listening. Current song is ${currentSongId}`);
-  }, [currentSongId !== songData.id && active === true]);
+    console.log(`${songData.title} is listening. Current song is ${currentSongData.id}`);
+  }, [currentSongData.id !== songData.id && active === true]);
 
   // useEffect(() => {
   //   setActive(false);
