@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 
   try {
     const songId = req.query.songId;
-    console.log(songId)
+    console.log('Request recieved for: ', songId)
 
     const filePath = `../frontend/src/assets/${songId}.mp3`;
 

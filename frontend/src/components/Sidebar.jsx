@@ -64,7 +64,7 @@ export default function Sidebar({ sidebarOption, setSidebarOption }) {
   console.log('sidebar')
 
   return (
-    <div className="sidebar-wrapper">
+    // <div className="sidebar-wrapper">
       <div className="sidebar">
         <div className="logo">
           <img src={logo} alt="Logo" />
@@ -91,6 +91,6 @@ export default function Sidebar({ sidebarOption, setSidebarOption }) {
           );
         })}
       </div>
-    </div>
+    // </div>
   );
 }

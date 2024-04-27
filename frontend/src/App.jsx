@@ -70,24 +70,23 @@ export const SongContext = createContext({
 
 function App() {
   const [sidebarOption, setSidebarOption] = useState(TABS.TRENDS);
-  // const [searchInput, setSearchInput] = useState("");
   const searchRef = useRef(null);
 
-  // const [currentSongId, setCurrentSongId] = useState(firstSong.id);
-  // const [previousSongId, setPreviousSongId] = useState(null);
   const [currentSongData, setCurrentSongData] = useState(firstSong);
 
-  const handleSetCurrentSongId = (songData) => {
-    if (songData.id !== currentSongData.id) {
-      // setPreviousSongId(currentSongId);
-      // setCurrentSongId(id);
-      setCurrentSongData(songData);
-    }
-  };
+  // const handleSetCurrentSongId = (songData) => {
+  //   if (songData.id !== currentSongData.id) {
+
+  //     setCurrentSongData(songData);
+  //   }
+  // };
 
   const setCurrentSong = useCallback((songData) => {
-    setCurrentSongData(songData);
-  }, [])
+    if (songData.id !== currentSongData.id) {
+
+      setCurrentSongData(songData);
+    }
+  }, [currentSongData.id])
 
   const contextValue = useMemo(() => ({
     currentSongData,
@@ -100,6 +99,7 @@ function App() {
         sidebarOption={sidebarOption}
         setSidebarOption={setSidebarOption}
       />
+      <div className="border"></div>
       <Content searchInputRef={searchRef} />
       <div className="border"></div>
       <CurrentTab />
