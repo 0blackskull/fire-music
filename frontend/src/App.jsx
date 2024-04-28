@@ -1,6 +1,7 @@
 import {
   createContext,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -41,6 +42,7 @@ export const SongContext = createContext({
 
 function App() {
   const [sidebarOption, setSidebarOption] = useState(TABS.TRENDS);
+  const [nextSongs, setNextSongs] = useState([]);
   const searchRef = useRef(null);
 
   const [currentSongData, setCurrentSongData] = useState(firstSong);
@@ -56,6 +58,13 @@ function App() {
     currentSongData,
     setCurrentSong,
   }), [currentSongData, setCurrentSong]);
+
+
+  useEffect(async () => {
+    const nextSongsList = await getNextSongs();
+
+    setNextSongs()
+  }, []);
 
   return (
     <SongContext.Provider value={contextValue}>
@@ -73,18 +82,3 @@ function App() {
 }
 
 export default App;
-
-/*
-<div>Sidebar, Albums...
-    Sidebar sections components (Library, Discover)
-  </div>
-  <div>Content Area
-    <div>Search input</div>
-    <div>Top component (can be populated for Top/trending, Top Artists)</div>
-  </div>
-  <div>Song list
-    Current Song section
-    Next songs list section
-  </div>
-  <div>playbar</div>
-*/
