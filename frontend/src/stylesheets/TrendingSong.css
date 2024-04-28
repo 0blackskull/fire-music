@@ -7,6 +7,8 @@
   min-width: 384px;
   width: 40vw;
   aspect-ratio: 2;
+  margin-left: auto;
+  margin-right: auto;
 
   .cover-pic,
   .desc-container {

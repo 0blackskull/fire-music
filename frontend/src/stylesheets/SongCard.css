@@ -10,9 +10,11 @@
 }
 
 .song-card {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
-  min-height: fit-content;
+  /* min-height: fit-content; */
+  height: 10vh;
 }
 
 .song-card-wrapper,
@@ -53,6 +55,7 @@
       align-items: center;
       justify-content: center;
     }
+
     .description {
       height: 35px;
       width: fit-content;
@@ -77,7 +80,7 @@
       }
     }
 
-    .description > .info,
+    .description>.info,
     .duration {
       color: #888691;
       font-size: 13px;
@@ -87,11 +90,12 @@
       margin-right: 10px;
     }
   }
+
   .song-card-container-active {
     background-color: #fe476e;
     transition: background-color 0.2s ease;
 
-    .description > .info,
+    .description>.info,
     .duration {
       color: #ffa3b7;
       font-weight: 300;

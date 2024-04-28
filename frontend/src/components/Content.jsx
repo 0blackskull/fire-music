@@ -8,10 +8,6 @@ import { memo } from "react";
 
 export const Content = memo(function Content({ searchInputRef }) {
   const placeholderString = "Enter keywords to search";
-  // const handleInput = (e) => {
-  //   e.preventDefault();
-  //   setSearchInput(e.target.value);
-  // };
 
   console.log('Content re rendered');
 
@@ -22,7 +18,6 @@ export const Content = memo(function Content({ searchInputRef }) {
           type="text"
           ref={searchInputRef}
           placeholder={placeholderString}
-          // onChange={handleInput}
         />
         <img src={searchIcon} alt="magnifying-glass" />
       </div>
@@ -46,8 +41,6 @@ export const Content = memo(function Content({ searchInputRef }) {
             </div>
           </div>
           <div className="top-artists-list">
-            <ArtistCard />
-            <ArtistCard />
             <ArtistCard />
             <ArtistCard />
             <ArtistCard />

@@ -5,6 +5,7 @@ import nextIcon from "../assets/icons/next.svg";
 import volumeIcon from "../assets/icons/volume.svg"
 import "../stylesheets/ControlBar.css"
 import { SongContext } from '../App';
+import { secondsToTimeTag } from '../utils/conversionUtils';
 
 const AudioBar = ({ audioRef, duration, currentTimeDivRef, seekInputRef }) => {
 
@@ -12,7 +13,7 @@ const AudioBar = ({ audioRef, duration, currentTimeDivRef, seekInputRef }) => {
     e.preventDefault();
     if (currentTimeDivRef && audioRef && Math.abs(audioRef.current.currentTime - e.target.value) >= 1) {
       audioRef.current.currentTime = e.target.value;
-      currentTimeDivRef.current.textContent = Math.floor(e.target.value);
+      currentTimeDivRef.current.textContent = secondsToTimeTag(e.target.value);
     }
   }
 
@@ -21,7 +22,7 @@ const AudioBar = ({ audioRef, duration, currentTimeDivRef, seekInputRef }) => {
       <div className='timer' ref={currentTimeDivRef}>0:00</div>
       <input id='track' ref={seekInputRef} type='range' defaultValue={0}
         onChange={handleSeek} step={1} min="0" max={duration} />
-        <div className='timer'>{Math.floor(duration)}</div>
+        <div className='timer'>{secondsToTimeTag(duration)}</div>
     </div>
   )
 }
@@ -61,7 +62,6 @@ const CreateAudio = memo(function CreateAudio({
 export const ControlBar = memo(function ControlBar() {
 
   const { currentSongData } = useContext(SongContext);
-  // const rendered = useRef(false);
   const audioRef = useRef(null);
   const volumeRef = useRef(null);
   const [duration, setDuration] = useState(0);
@@ -117,7 +117,7 @@ export const ControlBar = memo(function ControlBar() {
     if (Math.abs(audioRef.current.currentTime - seekInputRef.current.value) > 1) {
       const updatedTime = Math.floor(audioRef.current.currentTime);
       seekInputRef.current.value = updatedTime;
-      currentTimeDivRef.current.textContent = updatedTime;
+      currentTimeDivRef.current.textContent = secondsToTimeTag(updatedTime);
     }
   }
 
@@ -157,12 +157,6 @@ export const ControlBar = memo(function ControlBar() {
         seekInputRef={seekInputRef} 
         currentTimeDivRef={currentTimeDivRef} 
       />
-      {/* <CurrentTime currentTime={currentTime} />
-      <Track 
-        currentTime={currentTime}
-        duration={duration}
-        handleSeek={handleSeek}
-      /> */}
       <button id='mute-btn' onClick={handleMute}>
         <img src={volumeIcon} alt="Mute/sound" />
       </button>

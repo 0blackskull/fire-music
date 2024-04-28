@@ -6,8 +6,8 @@
   padding: 100px 20px 0 20px;
   padding-top: 100px;
   flex-grow: 0;
-  min-width: 320px;
-  width: 35%;
+  /* min-width: 320px; */
+  width: 30vw;
 
   .next-songs {
     width: 100%;

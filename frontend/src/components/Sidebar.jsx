@@ -9,6 +9,7 @@ import likedIcon from "../assets/icons/heart.svg";
 import browseIcon from "../assets/icons/songlist.svg";
 import radioIcon from "../assets/icons/radio.svg";
 import logo from "../assets/icons/logo.svg";
+import { memo } from "react";
 
 const sidebarOptions = [
   {
@@ -55,7 +56,7 @@ const sidebarOptions = [
   },
 ];
 
-export default function Sidebar({ sidebarOption, setSidebarOption }) {
+export const Sidebar = memo(function Sidebar({ sidebarOption, setSidebarOption }) {
   const handleOptionClick = (e, selectedOption) => {
     e.preventDefault();
     setSidebarOption(selectedOption);
@@ -93,4 +94,4 @@ export default function Sidebar({ sidebarOption, setSidebarOption }) {
       </div>
     // </div>
   );
-}
+})

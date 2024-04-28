@@ -1,14 +1,12 @@
 import {
   createContext,
-  memo,
   useCallback,
-  useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
 import "./App.css";
-import Sidebar from "./components/Sidebar.jsx";
+import { Sidebar } from "./components/Sidebar.jsx";
 import { Content } from "./components/Content.jsx";
 import { CurrentTab } from "./components/CurrentTab.jsx";
 import { ControlBar } from "./components/ControlBar.jsx";
@@ -36,50 +34,16 @@ const firstSong = {
 
 export const SongContext = createContext({
   currentSongId: null,
-  // previousSongId: null,
   currentSongData: null,
   setCurrentSongId: () => {},
 });
 
-// export const SongProvider = memo(function SongProvider(children) {
-//   const [currentSongId, setCurrentSongId] = useState(firstSong.id);
-//   // const [previousSongId, setPreviousSongId] = useState(null);
-//   const [currentSongData, setCurrentSongData] = useState(firstSong);
-
-//   const handleSetCurrentSongId = (id, songData) => {
-//     if (id !== currentSongId) {
-//       // setPreviousSongId(currentSongId);
-//       setCurrentSongId(id);
-//       setCurrentSongData(songData);
-//     }
-//   };
-
-//   return (
-//     <SongContext.Provider
-//       value={{
-//         currentSongId,
-//         // previousSongId,
-//         currentSongData,
-//         setCurrentSongId: handleSetCurrentSongId,
-//       }}
-//     >
-//       {children}
-//     </SongContext.Provider>
-//   );
-// });
 
 function App() {
   const [sidebarOption, setSidebarOption] = useState(TABS.TRENDS);
   const searchRef = useRef(null);
 
   const [currentSongData, setCurrentSongData] = useState(firstSong);
-
-  // const handleSetCurrentSongId = (songData) => {
-  //   if (songData.id !== currentSongData.id) {
-
-  //     setCurrentSongData(songData);
-  //   }
-  // };
 
   const setCurrentSong = useCallback((songData) => {
     if (songData.id !== currentSongData.id) {
