@@ -3,7 +3,7 @@ import coverPhoto from "../assets/icons/user.svg";
 import { CurrentSong } from "./CurrentSong";
 import SongCard from "./SongCard";
 import "../stylesheets/CurrentTab.css";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 
 const songs = [{
   id: 124,
@@ -50,7 +50,8 @@ const songs = [{
 ]
 
 
-export const CurrentTab = memo(function CurrentTab() {
+export const CurrentTab = memo(function CurrentTab(props) {
+  console.log(props.nextSongs);
 
   console.log('Current tab re rendered');
 
@@ -64,7 +65,7 @@ export const CurrentTab = memo(function CurrentTab() {
         Next Songs <img src={soundIcon} alt="Sound bars" />
       </div>
       <div className="next-songs">
-        {songs.map(song => <SongCard key={song.id} songData={song} />)}
+        {props.nextSongs.map(song => <SongCard key={song.id} songData={song} />)}
       </div>
     </div>
   );

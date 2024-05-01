@@ -1,7 +1,7 @@
-class SongMetada {
+class SongMetadata {
   constructor(db) {
     this.collection = db.collection('song-metadata');
   }
 }
 
-export default SongMetada;
+export default SongMetadata;

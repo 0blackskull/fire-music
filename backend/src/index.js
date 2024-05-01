@@ -2,18 +2,23 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import MainRouter from './routes/index.js';
-import DB from './db/mongoClient.js';
-
-dotenv.config();
+import { db } from './db/mongoClient.js';
 
 const PORT = process.env.PORT || 3000;
 
+console.log(`${import.meta.dirname}/../.env`);
+
+dotenv.config({ path: `${import.meta.dirname}/../.env` });
+
 async function start() {
+
   const app = express();
 
-  await DB.init();
+  await db.init();
 
   app.use(cors({ origin: 'http://localhost:5173' }));
+
+  app.use(express.json());
 
   app.use('/', MainRouter);
 

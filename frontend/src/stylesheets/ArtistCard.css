@@ -2,9 +2,6 @@
   display: flex;
   flex-direction: column;
   width: 20%;
-  min-width: 15vw;
-  max-width: 200px;
-  /* min-width: 190px; */
   align-items: center;
   gap: 10px;
   border-radius: 16px;
@@ -13,24 +10,31 @@
   backdrop-filter: blur(10px);
   aspect-ratio: 0.7;
   font-size: 1.1rem;
+  flex-shrink: 1;
+  min-width: 8rem;
 
   img {
     display: inline-block;
     width: 55%;
-    height: auto;
+    aspect-ratio: 1;
     border-radius: 50%;
     margin-top: 15px;
     margin-bottom: 10%;
+    object-fit: cover;
   }
 
   .artistName {
     color: white;
     font-weight: 500;
     letter-spacing: 2px;
+    text-align: center;
+    font-size: 0.8rem;
   }
 
   .numPlays {
     color: #f9cfe6;
     font-size: 0.8em;
+    margin-top: auto;
+    margin-bottom: 10%;
   }
 }

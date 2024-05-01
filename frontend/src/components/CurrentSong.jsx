@@ -3,6 +3,7 @@ import coverPhoto from "../assets/icons/user.svg";
 import longSoundIcon from "../assets/icons/long-sound.svg";
 import { memo, useContext } from "react";
 import { SongContext } from "../App";
+import currentSongIcon from "../assets/icons/songlist.svg"
 
 // const songData = {
 //   id: 123,
@@ -21,15 +22,15 @@ export const CurrentSong = memo(function CurrentSong() {
     <div className="current-song-container-wrapper">
       <div className="current-song-container">
         <div className="cover-pic-preview">
-          <img src= {currentSongData.imgUrl} alt="cover-image" />
+          <img src= {currentSongData?.cardImg ?? currentSongIcon} alt="cover-image" />
         </div>
         <div className="cover-pic">
           <img src={longSoundIcon} alt="long sound bars" />
         </div>
-        <div className="song-title">{currentSongData.title}</div>
+        <div className="song-title">{currentSongData?.title ?? ''}</div>
         <div className="song-desc">
-          <div>• {currentSongData.artist}</div>
-          <div>• {currentSongData.year}</div>
+          <div>• {currentSongData?.artist ?? ''}</div>
+          <div>• {currentSongData?.year ?? ''}</div>
         </div>
       </div>
     </div>

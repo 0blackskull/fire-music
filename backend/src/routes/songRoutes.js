@@ -7,4 +7,8 @@ const SongRouter = new Router();
 
 SongRouter.route('/next').get(SongController.getNextSongs);
 
+SongRouter.route('/trend').get(SongController.getTrendingSong);
+
+SongRouter.route('/:id').get(SongController.getSongFile);
+
 export default SongRouter;

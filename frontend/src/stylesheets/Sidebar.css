@@ -29,7 +29,7 @@
 
     .title {
       color: white;
-      font-size: 2rem;
+      font-size: 1.6rem;
       letter-spacing: 2px;
       font-weight: 500;
       padding-left: 32.5px;
@@ -37,7 +37,7 @@
 
     .option,
     .selected-option {
-      padding: 1.5rem;
+      padding: 1.3rem;
     }
 
     .option {

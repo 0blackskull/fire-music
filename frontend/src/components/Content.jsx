@@ -4,10 +4,27 @@ import personIcon from "../assets/icons/user.svg";
 import searchIcon from "../assets/icons/search.svg";
 import ArtistCard from "./ArtistCard";
 import TrendingSong from "./TrendingSong";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
+import ArtistService from "../services/ArtistService";
+import SongService from "../services/SongService";
 
 export const Content = memo(function Content({ searchInputRef }) {
   const placeholderString = "Enter keywords to search";
+
+  const [artists, setArtists] = useState([]);
+  const [trendingSongs, setTrendingSongs] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const artistList = await ArtistService.getAllArtists();
+      const trendingSongData = await SongService.getTrendingSong();
+      // console.log(artistList);
+      setArtists(artistList || []);
+      setTrendingSongs(trendingSongData || []);
+    }
+
+    fetchData();
+  }, []);
 
   console.log('Content re rendered');
 
@@ -30,7 +47,11 @@ export const Content = memo(function Content({ searchInputRef }) {
             </div>
           </div>
           <div className="trending-songs-list">
-            <TrendingSong />
+            {trendingSongs.map(trend => {
+              return (
+                <TrendingSong key={trend.id} trendingSongData={trend} />
+              )
+            })}
           </div>
         </div>
         <div className="top-artists">
@@ -41,10 +62,11 @@ export const Content = memo(function Content({ searchInputRef }) {
             </div>
           </div>
           <div className="top-artists-list">
-            <ArtistCard />
-            <ArtistCard />
-            <ArtistCard />
-            <ArtistCard />
+            {artists.map(artist => {
+              return (
+                <ArtistCard key={artist.id} artistData={artist} />
+              )
+            })}
           </div>
         </div>
       </div>

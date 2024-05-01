@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, memo, useContext, useEffect, useRef, useState } from 'react';
 import pauseIcon from "../assets/icons/pause.svg";
 import prevIcon from "../assets/icons/prev.svg";
 import nextIcon from "../assets/icons/next.svg";
@@ -6,6 +6,11 @@ import volumeIcon from "../assets/icons/volume.svg"
 import "../stylesheets/ControlBar.css"
 import { SongContext } from '../App';
 import { secondsToTimeTag } from '../utils/conversionUtils';
+import SongService from '../services/SongService';
+
+const CacheContext = createContext({
+  audioFileMap: new Map()
+})
 
 const AudioBar = ({ audioRef, duration, currentTimeDivRef, seekInputRef }) => {
 
@@ -27,16 +32,35 @@ const AudioBar = ({ audioRef, duration, currentTimeDivRef, seekInputRef }) => {
   )
 }
 
-const SongNav = memo(function SongNav({ handlePlayPause }) {
+const SongNav = memo(function SongNav({ handlePlayPause, handlePlayback }) {
+  const { songQueue, setCurrentSong } = useContext(SongContext);
+
+  const handleLast = (e) => {
+    e.preventDefault();
+    console.log(songQueue.items[songQueue.frontIndex].title,
+       songQueue.items[songQueue.playIndex].title),
+    setCurrentSong(songQueue.last());
+
+    handlePlayback();
+  }
+
+  const handleNext = (e) => {
+    e.preventDefault();
+
+    setCurrentSong(songQueue.next());
+
+    handlePlayback();
+  }
+ 
   return (
     <div className='song-nav'>
-      <button>
+      <button onClick={handleLast}>
         <img src={prevIcon} alt="Last song" />
       </button>
       <button onClick={handlePlayPause} role="switch" aria-checked="false">
         <img src={pauseIcon} alt="play/pause" />
       </button>
-      <button>
+      <button onClick={handleNext}>
         <img src={nextIcon} alt="Next song" />
       </button>
     </div>
@@ -50,18 +74,16 @@ const CreateAudio = memo(function CreateAudio({
   audioRef
 }) {
   return (
-    <audio src={audioUrl} autoPlay={false} ref={audioRef} onTimeUpdate={(e) => handleTimeUpdate(e)}
+    <audio src={audioUrl} autoPlay={true} ref={audioRef} onTimeUpdate={(e) => handleTimeUpdate(e)}
       onDurationChange={(e) => setDuration(e.currentTarget.duration)}>
       Browser problem
     </audio>
   );
-}, (prevProps, nextProps) => {
-  return prevProps.audioUrl === nextProps.audioUrl;
 })
 
 export const ControlBar = memo(function ControlBar() {
 
-  const { currentSongData } = useContext(SongContext);
+  const { currentSongData, songQueue } = useContext(SongContext);
   const audioRef = useRef(null);
   const volumeRef = useRef(null);
   const [duration, setDuration] = useState(0);
@@ -71,24 +93,25 @@ export const ControlBar = memo(function ControlBar() {
 
   const [audioUrl, setaudioUrl] = useState(null);
 
+  const playSong = async () => {
+    if (audioRef  && !audioRef.current.paused) {
+      audioRef.current.pause();
+    }
+
+    try {
+      const songId = songQueue.play();
+
+      const { file } =  await SongService.getSongFile(songId);
+
+      const audioUrlString = "data:audio/mp3;base64," + file;
+
+      setaudioUrl(audioUrlString);
+    } catch (error) {
+      console.error('Error playing song:', error);
+    }
+  };
+
   useEffect(() => {
-    const playSong = async () => {
-      console.log("current song: ", currentSongData.id);
-      try {
-        const response = await fetch(`http://localhost:3000/?songId=${currentSongData.id}`, {
-          headers: {
-            'Range': 'bytes=0-'
-          },
-        });
-        const audioBlob = await response.blob(); // Extract Blob data from response
-
-        const audioUrl = URL.createObjectURL(audioBlob);
-
-        setaudioUrl(audioUrl);
-      } catch (error) {
-        console.error('Error playing song:', error);
-      }
-    };
 
     playSong();
 
@@ -98,8 +121,8 @@ export const ControlBar = memo(function ControlBar() {
         URL.revokeObjectURL(audioUrl);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSongData]);
+    
+  }, [currentSongData, songQueue, audioUrl]);
 
   const handlePlayPause = (e) => {
     e.preventDefault();
@@ -143,6 +166,7 @@ export const ControlBar = memo(function ControlBar() {
   })
 
   return (
+    <CacheContext.Provider>
     <div className='control-bar'>
       <CreateAudio
         audioUrl={audioUrl}
@@ -150,7 +174,10 @@ export const ControlBar = memo(function ControlBar() {
         setDuration={setDuration}
         audioRef={audioRef}
       />
-      <SongNav handlePlayPause={handlePlayPause} />
+      <SongNav 
+        handlePlayPause={handlePlayPause} 
+        handlePlayback={playSong} 
+      />
       <AudioBar 
         audioRef={audioRef} 
         duration={duration} 
@@ -162,5 +189,6 @@ export const ControlBar = memo(function ControlBar() {
       </button>
       <input id='volume' type="range" ref={volumeRef} onChange={handleVolume} min="0" max="1" step={0.1} defaultValue={1} />
     </div>
+    </CacheContext.Provider>
   );
 })

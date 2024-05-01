@@ -11,6 +11,8 @@ import { Sidebar } from "./components/Sidebar.jsx";
 import { Content } from "./components/Content.jsx";
 import { CurrentTab } from "./components/CurrentTab.jsx";
 import { ControlBar } from "./components/ControlBar.jsx";
+import SongService from "./services/SongService.js";
+import { songQueue } from "./utils/songQueue.js";
 
 const TABS = {
   TRENDS: "Trends",
@@ -25,7 +27,7 @@ const TABS = {
 
 const firstSong = {
   id: 125,
-  imgUrl: "/src/assets/test_image.png",
+  cardImg: "/src/assets/test_image.png",
   // fileUrl: "../assets/test_song.mp3",
   title: "Somebody Else",
   artist: "The 1975",
@@ -34,9 +36,9 @@ const firstSong = {
 }
 
 export const SongContext = createContext({
-  currentSongId: null,
   currentSongData: null,
-  setCurrentSongId: () => {},
+  setCurrentSong: () => {},
+  songQueue: null
 });
 
 
@@ -45,25 +47,30 @@ function App() {
   const [nextSongs, setNextSongs] = useState([]);
   const searchRef = useRef(null);
 
-  const [currentSongData, setCurrentSongData] = useState(firstSong);
+  const [currentSongData, setCurrentSongData] = useState(null);
 
   const setCurrentSong = useCallback((songData) => {
-    if (songData.id !== currentSongData.id) {
-
+    if (songData.id !== currentSongData?.id) {
+      songQueue.enqueue(songData);
       setCurrentSongData(songData);
     }
-  }, [currentSongData.id])
+  }, [currentSongData?.id])
 
   const contextValue = useMemo(() => ({
     currentSongData,
     setCurrentSong,
+    songQueue: songQueue,
   }), [currentSongData, setCurrentSong]);
 
 
-  useEffect(async () => {
-    const nextSongsList = await getNextSongs();
+  useEffect(() => {
+    async function fetchNextSongs() {
+      const nextSongsList = await SongService.getNextSongs();
+      // console.log(nextSongsList);
+      setNextSongs(nextSongsList || []);
+    }
 
-    setNextSongs()
+    fetchNextSongs();
   }, []);
 
   return (
@@ -75,8 +82,8 @@ function App() {
       <div className="border"></div>
       <Content searchInputRef={searchRef} />
       <div className="border"></div>
-      <CurrentTab />
-      <ControlBar />
+      <CurrentTab nextSongs={nextSongs} />
+      {currentSongData &&  <ControlBar />}
     </SongContext.Provider>
   );
 }
